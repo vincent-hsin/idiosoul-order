@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 
 @Getter
 @Entity
-//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
 @Inheritance
 public class Order extends EntityBase<Long> {
     /* primary */

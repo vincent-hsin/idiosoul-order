@@ -1,7 +1,7 @@
 package xyz.idiosoul.fair.order.domain.model.cart;
 
 import lombok.Getter;
-import xyz.idiosoul.fair.order.domain.model.order.Order;
+import xyz.idiosoul.fair.order.infrastructure.EntityBase;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -15,8 +15,8 @@ import java.util.stream.Collectors;
  */
 @Getter
 @Entity
-@DiscriminatorValue("10") // OrderTypeEnum.SC
-public class ShoppingGroup extends Order {
+//@DiscriminatorValue("10") // OrderTypeEnum.SC
+public class ShoppingGroup extends EntityBase<Long> {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     protected List<ShoppingItem> shoppingItems;
