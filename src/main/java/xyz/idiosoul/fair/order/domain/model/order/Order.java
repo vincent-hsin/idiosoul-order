@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 
 @Getter
 @Entity
-@Table(name = "t_order_order")
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
+//@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
 @Inheritance
 public class Order extends EntityBase<Long> {
     /* primary */
+    protected byte type;
     protected String number;
     protected byte status;
     protected Integer buyerId, sellerId;
