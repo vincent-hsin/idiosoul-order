@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class OrderOfShopVO {
+public class ShoppingGroupOfShopVO {
     //    @ApiModelProperty("商铺id")
     int shopId;
     //    @ApiModelProperty("商铺名称")
@@ -24,5 +24,5 @@ public class OrderOfShopVO {
 //    @ApiModelProperty("备注")
 //    String remark; // todo del？
 //    @ApiModelProperty("订单项列表")
-    List<ShoppingItemVO> orderItems = new ArrayList<>();
+    List<ShoppingItemVO> shoppingItems = new ArrayList<>();
 }

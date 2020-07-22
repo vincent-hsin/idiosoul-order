@@ -2,7 +2,11 @@ package xyz.idiosoul.fair.order.infrastructure;
 
 import lombok.Getter;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
 /**
@@ -21,8 +25,6 @@ public abstract class EntityBase<T> {
     protected Integer createUserId, modifyUserId;
     @Column(name = "is_deleted")
     protected boolean deleted;
-
-    protected String features, future;
 
     public void delete() {
         deleted = true;

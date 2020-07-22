@@ -30,28 +30,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private ProductService ProductService;
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void add(int buyerId, ShoppingItemAddDTO shoppingItemAddDTO) {
         // 获取店铺信息
         int shopId = shoppingItemAddDTO.getShopId();
         ShopDTO shopDetail = shopService.getShopDetail(shopId);
 
-        // 获取商品信息
-        long productId = shoppingItemAddDTO.getProductId();
-        ProductDTO productDetail = ProductService.getDetail(productId);
+//        // 获取商品信息
+//        long productId = shoppingItemAddDTO.getProductId();
+//        ProductDTO productDetail = ProductService.getDetail(productId);
 
         // 获取sku信息
-        long specificationId = shoppingItemAddDTO.getSpecificationId();
+        long skuId = shoppingItemAddDTO.getSkuId();
         SkuDetail fairSkuDetail =
-                ProductService.getSkuDetail(specificationId);
+                ProductService.getSkuDetail(skuId);
 
-        // 图片
-        String skuImage = StringUtils.isBlank(fairSkuDetail.getSkuImage()) ? productDetail.getProductImage() :
-                fairSkuDetail.getSkuImage();
+//        // 图片
+//        String skuImage = StringUtils.isBlank(fairSkuDetail.getSkuImage()) ? productDetail.getProductImage() :
+//                fairSkuDetail.getSkuImage();
 
         Customer customer = customerFactory.getCustomer(buyerId);
-        CartAddDTO cartAddDTO = new CartAddDTO(buyerId, shopId, shopDetail.getShopName(), productId,
-                productDetail.getProductName(), skuImage, specificationId,
+        CartAddDTO cartAddDTO = new CartAddDTO(buyerId, shopId, shopDetail.getShopName(), skuId,
                 fairSkuDetail.getSpecificationName(), fairSkuDetail.getSpecificationValue()
                 , shoppingItemAddDTO.getQuantity(), fairSkuDetail.getSingleBuyUnitPrice());
         customer.addCartItem(cartAddDTO);
@@ -60,33 +59,33 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void refreshPrice(int buyerId, int dataSpace) {
-        Customer customer = customerFactory.getCustomer(buyerId);
-        ShoppingCart shoppingCart = customer.getShoppingCart(dataSpace);
-        shoppingCart.getShoppingGroups().stream().flatMap(shoppingGroup -> shoppingGroup.getShoppingItems().stream()).forEach(shoppingItem -> {
-
-            // todo 1.判断失效商品 2.判断价格变化
-            // 获取sku信息
-            SkuDetail fairSkuDetail = ProductService.getSkuDetail(shoppingItem.getSkuId());
-
-//            // 检查库存状态
-//            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.VALID.toString()) &&
-//                    fairSkuDetail.getInventory() < shoppingItem.getQuantity()) {
-//                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.OUT_OF_STOCK);
-//                return;
-//            }
-//            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.OUT_OF_STOCK.toString()) &&
-//                    fairSkuDetail.getInventory() >= shoppingItem.getQuantity()) {
-//                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.VALID);
-//            }
-
-            // 更新单价
-            shoppingItem.updateUnitPrice(fairSkuDetail.getSingleBuyUnitPrice());
-
-            /*================= 促销类型 ==============*/
-
-            // 先清空
-            shoppingItem.clearPromotionTypes();
-        });
+//        Customer customer = customerFactory.getCustomer(buyerId);
+//        ShoppingCart shoppingCart = customer.getShoppingCart(dataSpace);
+//        shoppingCart.getShoppingGroups().stream().flatMap(shoppingGroup -> shoppingGroup.getShoppingItems().stream()).forEach(shoppingItem -> {
+//
+//            // todo 1.判断失效商品 2.判断价格变化
+//            // 获取sku信息
+//            SkuDetail fairSkuDetail = ProductService.getSkuDetail(shoppingItem.getSkuId());
+//
+////            // 检查库存状态
+////            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.VALID.toString()) &&
+////                    fairSkuDetail.getInventory() < shoppingItem.getQuantity()) {
+////                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.OUT_OF_STOCK);
+////                return;
+////            }
+////            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.OUT_OF_STOCK.toString()) &&
+////                    fairSkuDetail.getInventory() >= shoppingItem.getQuantity()) {
+////                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.VALID);
+////            }
+//
+//            // 更新单价
+//            shoppingItem.updateUnitPrice(fairSkuDetail.getSingleBuyUnitPrice());
+//
+//            /*================= 促销类型 ==============*/
+//
+////            // 先清空
+////            shoppingItem.clearPromotionTypes();
+//        });
     }
 
     @Override

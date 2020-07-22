@@ -17,11 +17,11 @@ public class CartAddDTO {
     private String shopName;
 
 //    @ApiModelProperty("商品id")
-    private Long productId;
+//    private Long productId;
 //    @ApiModelProperty("商品名称")
-    private String productName;
+//    private String productName;
 //    @ApiModelProperty("商品图片")
-    private String productImage;
+//    private String productImage;
 //    @ApiModelProperty("商品规格id")
     private Long specificationId;
 //    @ApiModelProperty("规格名称")
@@ -38,15 +38,17 @@ public class CartAddDTO {
     private String clientChannel;
 
     public CartAddDTO(int buyerId, Integer shopId, String shopName,
-                      Long productId,
-                      String productName, String productImage, Long specificationId, String specificationName,
+//                      Long productId,
+//                      String productName,
+//                      String productImage,
+                      Long specificationId, String specificationName,
                       String specificationValue, Integer quantity, BigDecimal unitPrice) {
         this.buyerId = buyerId;
         this.shopId = shopId;
         this.shopName = shopName;
-        this.productId = productId;
-        this.productName = productName;
-        this.productImage = productImage;
+//        this.productId = productId;
+//        this.productName = productName;
+//        this.productImage = productImage;
         this.specificationId = specificationId;
         this.specificationName = specificationName;
         this.specificationValue = specificationValue;

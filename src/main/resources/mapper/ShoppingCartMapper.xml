@@ -6,10 +6,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.idiosoul.fair.order.dao.ShoppingCartMapper">
 
-    <resultMap id="shoppingCartResultMap" type="xyz.idiosoul.fair.order.vo.OrderOfShopVO">
+    <resultMap id="shoppingCartResultMap" type="xyz.idiosoul.fair.order.vo.ShoppingGroupOfShopVO">
         <result property="shopId" column="shop_id"/>
         <result property="shopName" column="shop_name"/>
-        <collection property="orderItems" ofType="xyz.idiosoul.fair.order.vo.ShoppingItemVO">
+        <collection property="shoppingItems" ofType="xyz.idiosoul.fair.order.vo.ShoppingItemVO">
             <id property="itemId" column="item_id"/>
             <result property="productId" column="product_id"/>
             <result property="productName" column="product_name"/>
@@ -19,17 +19,15 @@
             <result property="specificationValue" column="specification_value"/>
             <result property="unitPrice" column="unit_price"/>
             <result property="quantity" column="quantity"/>
-            <result property="promotionTypes" column="promotion_types"/>
         </collection>
     </resultMap>
 
 
     <select id="getShoppingCartByBuyerIdAndDataSpace" resultMap="shoppingCartResultMap">
         SELECT oh.seller_id AS shop_id, oh.seller_name AS shop_name, oi.id as item_id, oi.product_id, oi.product_name,
-        oi.sku_id AS specification_id, oi.specification_name, oi.specification_value,oi.quantity,oi.product_image,oi.unit_price,
-        oi.promotion_types, oi.status_view
+        oi.sku_id AS specification_id, oi.specification_name, oi.specification_value,oi.quantity,oi.product_image,oi.unit_price
         FROM shopping_group oh, shopping_item oi
-        WHERE oh.id = oi.order_id AND oh.is_deleted = 0 AND oi.is_deleted = 0 AND oh.buyer_id = #{buyerId}
+        WHERE oh.id = oi.shopping_group_id AND oh.is_deleted = 0 AND oi.is_deleted = 0 AND oh.buyer_id = #{buyerId}
         ORDER BY GREATEST(oi.modify_time,oi.create_time) DESC
     </select>
 

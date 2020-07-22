@@ -1,24 +1,24 @@
 package xyz.idiosoul.fair.order.domain.model.user;
 
 import lombok.Getter;
-import xyz.idiosoul.fair.order.constant.OrderTypeEnum;
 import xyz.idiosoul.fair.order.constant.PaymentChannelEnum;
 import xyz.idiosoul.fair.order.domain.model.address.ShippingAddress;
 import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCart;
+import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCartFactory;
 import xyz.idiosoul.fair.order.domain.model.cart.ShoppingGroup;
+import xyz.idiosoul.fair.order.domain.model.cart.ShoppingGroupFactory;
 import xyz.idiosoul.fair.order.domain.model.cart.ShoppingItem;
 import xyz.idiosoul.fair.order.domain.model.order.LineItem;
 import xyz.idiosoul.fair.order.domain.model.order.Order;
 import xyz.idiosoul.fair.order.domain.model.payment.Payment;
 import xyz.idiosoul.fair.order.dto.CartAddDTO;
+import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
 import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
 import xyz.idiosoul.fair.order.repository.LineItemRepository;
-import xyz.idiosoul.fair.order.repository.OrderRepository;
 import xyz.idiosoul.fair.order.repository.PaymentRepository;
 import xyz.idiosoul.fair.order.repository.RequestEventRepository;
 import xyz.idiosoul.fair.order.repository.RequestRepository;
-import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -38,24 +38,26 @@ public class Customer {
     private RequestRepository requestRepository;
     private RequestEventRepository requestEventRepository;
     private PaymentRepository paymentRepository;
-    private ShoppingGroupRepository shoppingGroupRepository;
+    private ShoppingGroupFactory shoppingGroupFactory;
     private NumberGenerator numberGenerator;
+    private ShoppingCartFactory shoppingCartFactory;
 
 
-    Customer(int userId,LineItemRepository lineItemRepository,
+    Customer(int userId, LineItemRepository lineItemRepository,
              AddressRepository addressRepository, RequestRepository requestRepository,
              RequestEventRepository requestEventRepository,
              PaymentRepository paymentRepository,
-             ShoppingGroupRepository shoppingGroupRepository,
-             NumberGenerator numberGenerator) {
+             ShoppingGroupFactory shoppingGroupFactory,
+             NumberGenerator numberGenerator, ShoppingCartFactory shoppingCartFactory) {
         this.userId = userId;
         this.lineItemRepository = lineItemRepository;
         this.addressRepository = addressRepository;
         this.requestRepository = requestRepository;
         this.requestEventRepository = requestEventRepository;
         this.paymentRepository = paymentRepository;
-        this.shoppingGroupRepository = shoppingGroupRepository;
+        this.shoppingGroupFactory = shoppingGroupFactory;
         this.numberGenerator = numberGenerator;
+        this.shoppingCartFactory = shoppingCartFactory;
     }
 
     /**
@@ -100,10 +102,8 @@ public class Customer {
      *
      * @return
      */
-    public ShoppingCart getShoppingCart(int dataSpace) {
-        List<ShoppingGroup> shoppingGroups =
-                shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(userId);
-        return new ShoppingCart(shoppingGroups);
+    public ShoppingCart getShoppingCart() {
+        return shoppingCartFactory.getShoppingCart(userId);
     }
 
     // === 购物车相关 ==== //
@@ -112,23 +112,19 @@ public class Customer {
 //        Order order =
 //                orderRepository.findFirstByBuyerIdAndSellerIdAndTypeAndDeletedIsFalse(userId,
 //                        cartAddDTO.getShopId(), OrderTypeEnum.SC.getValue());
-        ShoppingGroup shoppingGroup;
 //        if (Objects.nonNull(order)) {
 //            shoppingGroup =
 //                    shoppingGroupRepository.findById(order.getId()).orElseThrow(() -> new RuntimeException(
 //                            "购物车数据异常"));
 //        } else {
-            shoppingGroup = new ShoppingGroup(cartAddDTO.getBuyerId(), cartAddDTO.getShopId(),
-                    cartAddDTO.getShopName(), cartAddDTO.getPlatformId(), cartAddDTO.getDataSpace(),
-                    cartAddDTO.getClientChannel());
-            shoppingGroupRepository.save(shoppingGroup);
+        Integer buyerId = cartAddDTO.getBuyerId();
+        Integer sellerId = cartAddDTO.getShopId();
+        ShoppingGroup shoppingGroup = shoppingGroupFactory.getShoppingGroup(buyerId, sellerId).orElse(shoppingGroupFactory.createShoppingGroup(buyerId, sellerId));
 //        }
 
-        shoppingGroup.add(new ShoppingItem(cartAddDTO.getProductId(), cartAddDTO.getProductName(),
-                cartAddDTO.getSpecificationId(), cartAddDTO.getSpecificationName(),
-                cartAddDTO.getSpecificationValue(), cartAddDTO.getProductImage(), cartAddDTO.getUnitPrice(),
+        shoppingGroup.add(new ShoppingItemAddDTO(cartAddDTO.getShopId(),
+                cartAddDTO.getSpecificationId(),
                 cartAddDTO.getQuantity()));
-//        shoppingGroupRepository.save(shoppingGroup);
     }
 
     /**
@@ -149,9 +145,8 @@ public class Customer {
     }
 
     private ShoppingItem getShoppingItem(int shoppingItemId) {
-        List<ShoppingGroup> shoppingGroups =
-                shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(userId);
-        return shoppingGroups.stream().flatMap(shoppingGroup -> shoppingGroup.getShoppingItems().stream()).filter(shoppingItem -> shoppingItem.getId() == shoppingItemId).findFirst().orElseThrow(() -> new RuntimeException("购物项不存在"));
+        ShoppingCart shoppingCart = getShoppingCart();
+        return shoppingCart.getShoppingGroups().stream().flatMap(shoppingGroup -> shoppingGroup.getShoppingItems().stream()).filter(shoppingItem -> shoppingItem.getId() == shoppingItemId).findFirst().orElseThrow(() -> new RuntimeException("购物项不存在"));
     }
 
     /**

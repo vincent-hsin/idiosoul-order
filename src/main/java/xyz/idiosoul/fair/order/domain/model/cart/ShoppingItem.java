@@ -17,11 +17,12 @@ import lombok.ToString;
 import xyz.idiosoul.fair.order.infrastructure.EntityBase;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
+/**
+ * 购物项（domain model）
+ */
 @Getter
 @ToString
 @Entity
@@ -35,16 +36,17 @@ public class ShoppingItem extends EntityBase<Long> {
     private BigDecimal unitPrice;
     private Integer quantity;
 
-    private String statusView;
-    private String promotionTypes;
-
     protected ShoppingItem() {
         // for Hibernate
     }
 
-    public ShoppingItem(Long productId, String productName, Long skuId,
-                        String specificationName,
-                        String specificationValue, String productImage, BigDecimal unitPrice, Integer quantity) {
+    public ShoppingItem(Long skuId) {
+        this.skuId = skuId;
+        this.quantity = 0;
+        this.createTime = LocalDateTime.now();
+    }
+
+    public ShoppingItem( Long skuId,BigDecimal unitPrice, Integer quantity) {
         this.productId = productId;
         this.productName = productName;
         this.skuId = skuId;
@@ -54,14 +56,6 @@ public class ShoppingItem extends EntityBase<Long> {
         this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.createTime = LocalDateTime.now();
-    }
-
-    public void clearPromotionTypes() {
-        this.promotionTypes = null;
-    }
-
-    public void delete() {
-        this.deleted = true;
     }
 
     public void editSpecification(long specificationId, String specificationName, String specificationValue) {

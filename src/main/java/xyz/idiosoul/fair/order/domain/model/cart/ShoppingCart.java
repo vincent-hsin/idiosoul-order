@@ -15,4 +15,6 @@ public class ShoppingCart {
     public ShoppingCart(List<ShoppingGroup> shoppingGroups) {
         this.shoppingGroups = shoppingGroups;
     }
+
+    public
 }

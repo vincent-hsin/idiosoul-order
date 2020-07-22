@@ -1,13 +1,16 @@
 package xyz.idiosoul.fair.order.domain.model.cart;
 
 import lombok.Getter;
+import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
 import xyz.idiosoul.fair.order.infrastructure.EntityBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -15,46 +18,31 @@ import java.util.stream.Collectors;
  */
 @Getter
 @Entity
-//@DiscriminatorValue("10") // OrderTypeEnum.SC
 public class ShoppingGroup extends EntityBase<Long> {
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
-    protected List<ShoppingItem> shoppingItems;
-
-    protected Integer buyerId, sellerId;
+    private Integer buyerId, sellerId;
     protected String buyerName, sellerName;
 
-    protected Integer platformId;
-    protected Integer dataSpace;
-    protected String clientChannel;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "shopping_group_id")
+    private List<ShoppingItem> shoppingItems;
 
     protected ShoppingGroup() {
         // for Hibernate
     }
 
-    public ShoppingGroup(Integer buyerId, Integer sellerId,
-                         String sellerName, Integer platformId,
-                         Integer dataSpace, String clientChannel) {
+    public ShoppingGroup(Integer buyerId, Integer sellerId) {
         this.buyerId = buyerId;
         this.sellerId = sellerId;
-        this.sellerName = sellerName;
-        this.platformId = platformId;
-        this.dataSpace = dataSpace;
-        this.clientChannel = clientChannel;
-//        this.type = OrderTypeEnum.SC.getValue();
     }
 
-    public void add(ShoppingItem shoppingItem) {
-        if (Objects.isNull(shoppingItems)) {
+    public void add(ShoppingItemAddDTO shoppingItemAddDTO) {
+        if (shoppingItems == null) {
             this.shoppingItems = new ArrayList<>();
         }
-        Optional<ShoppingItem> shoppingItemOptional =
-                shoppingItems.stream().filter(si -> si.getProductId().equals(shoppingItem.getProductId()) && si.getSkuId().equals(shoppingItem.getSkuId()) && si.isDeleted() == false).findFirst();
-        if (shoppingItemOptional.isPresent()) {
-            shoppingItemOptional.get().addQuantity(shoppingItem.getQuantity());
-        } else {
-            shoppingItems.add(shoppingItem);
-        }
+        ShoppingItem shoppingItem =
+                shoppingItems.stream().filter(si -> si.getSkuId().equals(shoppingItemAddDTO.getSkuId()) && si.isDeleted() == false).findAny().orElse(new ShoppingItem(shoppingItemAddDTO.getSkuId()));
+        shoppingItem.addQuantity(shoppingItemAddDTO.getQuantity());
+        shoppingItems.add(shoppingItem);
     }
 
     /**
