@@ -13,7 +13,6 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "t_order_request_event")
 public class RequestEvent extends EntityBase<Integer> {
     private Integer channel;
     @Enumerated(EnumType.STRING)

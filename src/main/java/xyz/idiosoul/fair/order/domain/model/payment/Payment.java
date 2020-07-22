@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
  */
 @Getter
 @Entity
-@Table(name = "t_order_payment")
 public class Payment extends EntityBase<Long> {
     @Setter
     private Byte status;

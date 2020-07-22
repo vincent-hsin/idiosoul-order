@@ -25,7 +25,6 @@ import java.util.Objects;
 @Getter
 @ToString
 @Entity
-@Table(name = "t_order_line_item")
 public class ShoppingItem extends EntityBase<Long> {
     private Long productId;
     private String productName;

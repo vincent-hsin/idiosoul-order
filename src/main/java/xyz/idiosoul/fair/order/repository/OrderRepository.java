@@ -14,6 +14,6 @@ public interface OrderRepository extends PagingAndSortingRepository<Order, Long>
 
     long countByBuyerIdAndStatusAndDeletedIsFalse(int buyerId, byte status);
 
-    Order findFirstByBuyerIdAndSellerIdAndTypeAndDataSpaceAndDeletedIsFalse(int buyerId, int sellerId,
-                                                                                  byte type, int dataSpace);
+    Order findFirstByBuyerIdAndSellerIdAndTypeAndDeletedIsFalse(int buyerId, int sellerId,
+                                                                                  byte type);
 }

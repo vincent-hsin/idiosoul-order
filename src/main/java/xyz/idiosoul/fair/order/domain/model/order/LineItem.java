@@ -19,7 +19,6 @@ import java.util.Objects;
 @Getter
 @ToString
 @Entity
-@Table(name = "t_order_line_item")
 @DynamicInsert
 @DynamicUpdate
 public class LineItem extends EntityBase<Long> {

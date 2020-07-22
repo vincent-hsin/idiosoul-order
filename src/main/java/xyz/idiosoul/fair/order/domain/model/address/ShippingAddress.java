@@ -10,7 +10,6 @@ import javax.persistence.Table;
 
 @Getter
 @Entity
-@Table(name = "t_order_address")
 @DynamicInsert
 @DynamicUpdate
 public class ShippingAddress extends EntityBase<Integer> {

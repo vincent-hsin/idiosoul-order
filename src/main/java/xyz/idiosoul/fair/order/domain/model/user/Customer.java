@@ -23,7 +23,6 @@ import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * 顾客 domain model
@@ -34,7 +33,6 @@ public class Customer {
     @Getter
     private String userName;
 
-    private OrderRepository orderRepository;
     private LineItemRepository lineItemRepository;
     private AddressRepository addressRepository;
     private RequestRepository requestRepository;
@@ -44,7 +42,7 @@ public class Customer {
     private NumberGenerator numberGenerator;
 
 
-    Customer(int userId, LineItemRepository lineItemRepository,
+    Customer(int userId,LineItemRepository lineItemRepository,
              AddressRepository addressRepository, RequestRepository requestRepository,
              RequestEventRepository requestEventRepository,
              PaymentRepository paymentRepository,
@@ -110,21 +108,21 @@ public class Customer {
 
     // === 购物车相关 ==== //
     public void addCartItem(CartAddDTO cartAddDTO) {
-        // todo 为什么 shoppingCartRepository 订单类型过滤不掉
-        Order order =
-                orderRepository.findFirstByBuyerIdAndSellerIdAndTypeAndDataSpaceAndDeletedIsFalse(userId,
-                        cartAddDTO.getShopId(), OrderTypeEnum.SC.getValue(), cartAddDTO.getDataSpace());
+//        // todo 为什么 shoppingCartRepository 订单类型过滤不掉
+//        Order order =
+//                orderRepository.findFirstByBuyerIdAndSellerIdAndTypeAndDeletedIsFalse(userId,
+//                        cartAddDTO.getShopId(), OrderTypeEnum.SC.getValue());
         ShoppingGroup shoppingGroup;
-        if (Objects.nonNull(order)) {
-            shoppingGroup =
-                    shoppingGroupRepository.findById(order.getId()).orElseThrow(() -> new RuntimeException(
-                            "购物车数据异常"));
-        } else {
+//        if (Objects.nonNull(order)) {
+//            shoppingGroup =
+//                    shoppingGroupRepository.findById(order.getId()).orElseThrow(() -> new RuntimeException(
+//                            "购物车数据异常"));
+//        } else {
             shoppingGroup = new ShoppingGroup(cartAddDTO.getBuyerId(), cartAddDTO.getShopId(),
                     cartAddDTO.getShopName(), cartAddDTO.getPlatformId(), cartAddDTO.getDataSpace(),
                     cartAddDTO.getClientChannel());
             shoppingGroupRepository.save(shoppingGroup);
-        }
+//        }
 
         shoppingGroup.add(new ShoppingItem(cartAddDTO.getProductId(), cartAddDTO.getProductName(),
                 cartAddDTO.getSpecificationId(), cartAddDTO.getSpecificationName(),

@@ -27,7 +27,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private ShopService shopService;
     @Autowired
-    private ProductService fairProductService;
+    private ProductService ProductService;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -38,12 +38,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         // 获取商品信息
         long productId = shoppingItemAddDTO.getProductId();
-        ProductDTO productDetail = fairProductService.getDetail(productId);
+        ProductDTO productDetail = ProductService.getDetail(productId);
 
         // 获取sku信息
         long specificationId = shoppingItemAddDTO.getSpecificationId();
         SkuDetail fairSkuDetail =
-                fairProductService.getSkuDetail(specificationId);
+                ProductService.getSkuDetail(specificationId);
 
         // 图片
         String skuImage = StringUtils.isBlank(fairSkuDetail.getSkuImage()) ? productDetail.getProductImage() :
@@ -66,7 +66,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
             // todo 1.判断失效商品 2.判断价格变化
             // 获取sku信息
-            SkuDetail fairSkuDetail = fairProductService.getSkuDetail(shoppingItem.getSkuId());
+            SkuDetail fairSkuDetail = ProductService.getSkuDetail(shoppingItem.getSkuId());
 
 //            // 检查库存状态
 //            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.VALID.toString()) &&
@@ -107,7 +107,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional(rollbackFor = Exception.class)
     public void editSpecificationId(int buyerId, int shoppingItemId, int specificationId) {
         // 取规格信息
-        SkuDetail fairSkuDetail = fairProductService.getSkuDetail(specificationId);
+        SkuDetail fairSkuDetail = ProductService.getSkuDetail(specificationId);
         String specificationName = fairSkuDetail.getSpecificationName();
         String specificationValue = fairSkuDetail.getSpecificationValue();
 

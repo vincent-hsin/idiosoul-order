@@ -22,7 +22,6 @@ import java.util.Objects;
  */
 @Entity
 @Data
-@Table(name = "t_order_request")
 @DynamicInsert
 @DynamicUpdate
 public class Request extends EntityBase<Integer> {

@@ -9,15 +9,17 @@ import xyz.idiosoul.fair.order.dto.SkuDetail;
  * @author xinw
  */
 @Service
-public class ProductServiceImpl implements ProductService {
+public class MockProductServiceImpl implements ProductService {
     @Override
     public ProductDTO getDetail(long productId) {
-        return null;
+        return new ProductDTO();
     }
 
     @Override
     public SkuDetail getSkuDetail(long skuId) {
-        return null;
+        SkuDetail skuDetail = new SkuDetail();
+        skuDetail.setSkuImage("image");
+        return skuDetail;
     }
 
     @Override

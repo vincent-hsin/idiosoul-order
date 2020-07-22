@@ -11,6 +11,6 @@ import xyz.idiosoul.fair.order.dto.ShopDTO;
 public class ShopServiceImpl implements ShopService {
     @Override
     public ShopDTO getShopDetail(long shopId) {
-        return null;
+        return new ShopDTO(1,"shop");
     }
 }
