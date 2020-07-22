@@ -58,10 +58,8 @@ public class ShoppingItem extends EntityBase<Long> {
         this.createTime = LocalDateTime.now();
     }
 
-    public void editSpecification(long specificationId, String specificationName, String specificationValue) {
+    public void editSpecification(long specificationId) {
         this.skuId = specificationId;
-        this.specificationName = specificationName;
-        this.specificationValue = specificationValue;
         this.modifyTime = LocalDateTime.now();
     }
 

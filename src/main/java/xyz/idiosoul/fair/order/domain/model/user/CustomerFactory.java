@@ -2,6 +2,7 @@ package xyz.idiosoul.fair.order.domain.model.user;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCartFactory;
 import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
 import xyz.idiosoul.fair.order.repository.LineItemRepository;
@@ -14,7 +15,7 @@ import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 @Component
 public class CustomerFactory {
     @Autowired
-    private OrderRepository orderRepository;
+    private ShoppingCartFactory shoppingCartFactory;
     @Autowired
     private LineItemRepository lineItemRepository;
     @Autowired
@@ -34,7 +35,6 @@ public class CustomerFactory {
         return new Customer(userId, lineItemRepository, addressRepository, requestRepository,
                 requestEventRepository,
                 paymentRepository,
-                shoppingGroupRepository,
                 numberGenerator, shoppingCartFactory);
     }
 }

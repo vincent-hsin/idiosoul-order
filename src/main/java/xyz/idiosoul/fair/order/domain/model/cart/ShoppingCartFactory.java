@@ -10,15 +10,17 @@ import java.util.List;
  */
 @Component
 public class ShoppingCartFactory {
+    private ShoppingGroupFactory shoppingGroupFactory;
     private ShoppingGroupRepository shoppingGroupRepository;
 
-    public ShoppingCartFactory(ShoppingGroupRepository shoppingGroupRepository) {
+    public ShoppingCartFactory(ShoppingGroupFactory shoppingGroupFactory, ShoppingGroupRepository shoppingGroupRepository) {
+        this.shoppingGroupFactory = shoppingGroupFactory;
         this.shoppingGroupRepository = shoppingGroupRepository;
     }
 
     public ShoppingCart getShoppingCart(int userId) {
         List<ShoppingGroup> shoppingGroups =
                 shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(userId);
-        return new ShoppingCart(shoppingGroups);
+        return new ShoppingCart(shoppingGroupFactory, shoppingGroups);
     }
 }

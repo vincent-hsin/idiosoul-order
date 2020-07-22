@@ -1,6 +1,5 @@
 package xyz.idiosoul.fair.order.application.service.impl;
 
-import io.micrometer.core.instrument.util.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +11,6 @@ import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCart;
 import xyz.idiosoul.fair.order.domain.model.user.Customer;
 import xyz.idiosoul.fair.order.domain.model.user.CustomerFactory;
 import xyz.idiosoul.fair.order.dto.CartAddDTO;
-import xyz.idiosoul.fair.order.dto.ProductDTO;
 import xyz.idiosoul.fair.order.dto.ShopDTO;
 import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
 import xyz.idiosoul.fair.order.dto.SkuDetail;
@@ -24,8 +22,10 @@ import java.util.List;
 public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Autowired
     private CustomerFactory customerFactory;
+    // FIXME 解耦
     @Autowired
     private ShopService shopService;
+    // FIXME 解耦
     @Autowired
     private ProductService ProductService;
 
@@ -53,11 +53,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         CartAddDTO cartAddDTO = new CartAddDTO(buyerId, shopId, shopDetail.getShopName(), skuId,
                 fairSkuDetail.getSpecificationName(), fairSkuDetail.getSpecificationValue()
                 , shoppingItemAddDTO.getQuantity(), fairSkuDetail.getSingleBuyUnitPrice());
-        customer.addCartItem(cartAddDTO);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        shoppingCart.addShoppingItem(cartAddDTO);
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void refreshPrice(int buyerId, int dataSpace) {
 //        Customer customer = customerFactory.getCustomer(buyerId);
 //        ShoppingCart shoppingCart = customer.getShoppingCart(dataSpace);
@@ -91,14 +92,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public int getCartItemCount(int buyerId) {
         Customer customer = customerFactory.getCustomer(buyerId);
-        return customer.getCartItemCount();
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        return shoppingCart.countShoppingItems();
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
+    @Transactional
     public void editQuantity(int buyerId, int shoppingItemId, int quantity) {
         Customer customer = customerFactory.getCustomer(buyerId);
-        customer.editCartItemQuantity(shoppingItemId, quantity);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        shoppingCart.editShoppingItemQuantity(shoppingItemId, quantity);
     }
 
 
@@ -111,15 +114,16 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         String specificationValue = fairSkuDetail.getSpecificationValue();
 
         Customer customer = customerFactory.getCustomer(buyerId);
-
-        customer.editCartItemSpecification(shoppingItemId, specificationId, specificationName, specificationValue);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        shoppingCart.editShoppingItemSku(shoppingItemId, specificationId);
     }
 
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void delete(int buyerId, List<Long> orderItemIds) {
+    @Transactional
+    public void deleteCartItems(int buyerId, List<Long> orderItemIds) {
         Customer customer = customerFactory.getCustomer(buyerId);
-        customer.deleteCartItem(orderItemIds);
+        ShoppingCart shoppingCart = customer.getShoppingCart();
+        shoppingCart.deleteShoppingItems(orderItemIds);
     }
 }

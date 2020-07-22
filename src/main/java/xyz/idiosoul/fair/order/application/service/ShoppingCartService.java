@@ -43,5 +43,5 @@ public interface ShoppingCartService {
      *
      * @param orderItemIds
      */
-    void delete(int buyerId, List<Long> orderItemIds);
+    void deleteCartItems(int buyerId, List<Long> orderItemIds);
 }

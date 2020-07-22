@@ -73,12 +73,12 @@ public class ShoppingCartController {
     }
 
     //    @ApiOperation("删除购物车商品")
-//    @PostMapping("items/delete")
+    @PostMapping("items/delete")
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "orderItemIds", value = "购物项id（数组）,例如：[1,2,3]")
 //    })
-    public void delete(@RequestBody List<Long> orderItemIds) {
+    public void deleteItems(@RequestBody List<Long> orderItemIds) {
         int buyerId = RequestHeaderUtil.getBuyerId();
-        shoppingCartService.delete(buyerId, orderItemIds);
+        shoppingCartService.deleteCartItems(buyerId, orderItemIds);
     }
 }
