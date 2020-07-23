@@ -1,4 +1,4 @@
-package xyz.idiosoul.fair.order.infrastructure.service.impl;
+package xyz.idiosoul.fair.order.application.service.impl;
 
 import org.springframework.stereotype.Service;
 import xyz.idiosoul.fair.order.application.service.ProductService;

@@ -31,27 +31,19 @@ public class Customer {
     @Getter
     private String userName;
 
-    private LineItemRepository lineItemRepository;
     private AddressRepository addressRepository;
-    private RequestRepository requestRepository;
-    private RequestEventRepository requestEventRepository;
     private PaymentRepository paymentRepository;
-    private NumberGenerator numberGenerator;
     private ShoppingCartFactory shoppingCartFactory;
 
 
-    Customer(int userId, LineItemRepository lineItemRepository,
-             AddressRepository addressRepository, RequestRepository requestRepository,
-             RequestEventRepository requestEventRepository,
+    Customer(int userId,
+             AddressRepository addressRepository,
+
              PaymentRepository paymentRepository,
-             NumberGenerator numberGenerator, ShoppingCartFactory shoppingCartFactory) {
+ShoppingCartFactory shoppingCartFactory) {
         this.userId = userId;
-        this.lineItemRepository = lineItemRepository;
         this.addressRepository = addressRepository;
-        this.requestRepository = requestRepository;
-        this.requestEventRepository = requestEventRepository;
         this.paymentRepository = paymentRepository;
-        this.numberGenerator = numberGenerator;
         this.shoppingCartFactory = shoppingCartFactory;
     }
 

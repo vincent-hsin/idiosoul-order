@@ -17,17 +17,25 @@ import xyz.idiosoul.fair.order.dto.SkuDetail;
 
 import java.util.List;
 
+/**
+ * 购物车服务-实现
+ *
+ * @author vincent
+ */
 @Slf4j
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
-    @Autowired
-    private CustomerFactory customerFactory;
+    private final CustomerFactory customerFactory;
     // FIXME 解耦
-    @Autowired
-    private ShopService shopService;
+    private final ShopService shopService;
     // FIXME 解耦
-    @Autowired
-    private ProductService ProductService;
+    private final ProductService ProductService;
+
+    public ShoppingCartServiceImpl(CustomerFactory customerFactory, ShopService shopService, ProductService ProductService) {
+        this.customerFactory = customerFactory;
+        this.shopService = shopService;
+        this.ProductService = ProductService;
+    }
 
     @Override
     @Transactional
@@ -55,38 +63,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 , shoppingItemAddDTO.getQuantity(), fairSkuDetail.getSingleBuyUnitPrice());
         ShoppingCart shoppingCart = customer.getShoppingCart();
         shoppingCart.addShoppingItem(cartAddDTO);
-    }
-
-    @Override
-    @Transactional
-    public void refreshPrice(int buyerId, int dataSpace) {
-//        Customer customer = customerFactory.getCustomer(buyerId);
-//        ShoppingCart shoppingCart = customer.getShoppingCart(dataSpace);
-//        shoppingCart.getShoppingGroups().stream().flatMap(shoppingGroup -> shoppingGroup.getShoppingItems().stream()).forEach(shoppingItem -> {
-//
-//            // todo 1.判断失效商品 2.判断价格变化
-//            // 获取sku信息
-//            SkuDetail fairSkuDetail = ProductService.getSkuDetail(shoppingItem.getSkuId());
-//
-////            // 检查库存状态
-////            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.VALID.toString()) &&
-////                    fairSkuDetail.getInventory() < shoppingItem.getQuantity()) {
-////                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.OUT_OF_STOCK);
-////                return;
-////            }
-////            if (shoppingItem.getStatusView().equals(ShoppingItemStatusViewEnum.OUT_OF_STOCK.toString()) &&
-////                    fairSkuDetail.getInventory() >= shoppingItem.getQuantity()) {
-////                shoppingItem.updateStatusView(ShoppingItemStatusViewEnum.VALID);
-////            }
-//
-//            // 更新单价
-//            shoppingItem.updateUnitPrice(fairSkuDetail.getSingleBuyUnitPrice());
-//
-//            /*================= 促销类型 ==============*/
-//
-////            // 先清空
-////            shoppingItem.clearPromotionTypes();
-//        });
     }
 
     @Override

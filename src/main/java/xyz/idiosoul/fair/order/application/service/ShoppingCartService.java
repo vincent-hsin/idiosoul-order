@@ -4,6 +4,11 @@ import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
 
 import java.util.List;
 
+/**
+ * 购物车服务-接口
+ *
+ * @author vincent
+ */
 public interface ShoppingCartService {
 
     /**
@@ -13,16 +18,6 @@ public interface ShoppingCartService {
      * @param shoppingItemAddDTO
      */
     void add(int buyerId, ShoppingItemAddDTO shoppingItemAddDTO);
-
-
-    void refreshPrice(int buyerId, int dataSpace);
-
-    /**
-     * 获取购物项数量
-     *
-     * @return
-     */
-    int getCartItemCount(int buyerId);
 
     /**
      * 修改数量
@@ -37,6 +32,13 @@ public interface ShoppingCartService {
      * @param specificationId
      */
     void editSpecificationId(int buyerId, int shoppingItemId, int specificationId);
+
+    /**
+     * 获取购物项数量
+     *
+     * @return
+     */
+    int getCartItemCount(int buyerId);
 
     /**
      * 删除

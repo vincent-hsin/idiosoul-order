@@ -3,38 +3,24 @@ package xyz.idiosoul.fair.order.domain.model.user;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCartFactory;
-import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
-import xyz.idiosoul.fair.order.repository.LineItemRepository;
-import xyz.idiosoul.fair.order.repository.OrderRepository;
 import xyz.idiosoul.fair.order.repository.PaymentRepository;
-import xyz.idiosoul.fair.order.repository.RequestEventRepository;
-import xyz.idiosoul.fair.order.repository.RequestRepository;
-import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 
 @Component
 public class CustomerFactory {
-    @Autowired
-    private ShoppingCartFactory shoppingCartFactory;
-    @Autowired
-    private LineItemRepository lineItemRepository;
-    @Autowired
-    private AddressRepository addressRepository;
-    @Autowired
-    private RequestRepository requestRepository;
-    @Autowired
-    private RequestEventRepository requestEventRepository;
-    @Autowired
-    private PaymentRepository paymentRepository;
-    @Autowired
-    private ShoppingGroupRepository shoppingGroupRepository;
-    @Autowired
-    private NumberGenerator numberGenerator;
+    private final ShoppingCartFactory shoppingCartFactory;
+    private final AddressRepository addressRepository;
+    private final PaymentRepository paymentRepository;
+
+    public CustomerFactory(ShoppingCartFactory shoppingCartFactory, AddressRepository addressRepository, PaymentRepository paymentRepository) {
+        this.shoppingCartFactory = shoppingCartFactory;
+        this.addressRepository = addressRepository;
+        this.paymentRepository = paymentRepository;
+    }
+
 
     public Customer getCustomer(int userId) {
-        return new Customer(userId, lineItemRepository, addressRepository, requestRepository,
-                requestEventRepository,
-                paymentRepository,
-                numberGenerator, shoppingCartFactory);
+        return new Customer(userId, addressRepository,
+                paymentRepository, shoppingCartFactory);
     }
 }
