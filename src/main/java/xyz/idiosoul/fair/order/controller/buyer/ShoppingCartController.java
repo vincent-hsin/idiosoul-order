@@ -12,6 +12,8 @@ import xyz.idiosoul.fair.order.util.RequestHeaderUtil;
 import xyz.idiosoul.fair.order.vo.ShoppingGroupOfShopVO;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //@Api(tags = "顾客-购物车")
 @RestController
@@ -56,9 +58,9 @@ public class ShoppingCartController {
 //            @ApiImplicitParam(name = "shoppingItemId", value = "购物项id"),
 //            @ApiImplicitParam(name = "quantity", value = "商品数量"),
 //    })
-    public void editQuantity(int shoppingItemId, int quantity) {
+    public void editQuantity(int sellerId, int skuId, int quantity) {
         int buyerId = RequestHeaderUtil.getBuyerId();
-        shoppingCartService.editQuantity(buyerId, shoppingItemId, quantity);
+        shoppingCartService.editQuantity(buyerId, sellerId, skuId, quantity);
     }
 
     //    @ApiOperation("修改购物车商品规格")
@@ -67,9 +69,9 @@ public class ShoppingCartController {
 //            @ApiImplicitParam(name = "shoppingItemId", value = "购物项id"),
 //            @ApiImplicitParam(name = "specificationId", value = "规格id")
 //    })
-    public void editSpecificationId(int shoppingItemId, int specificationId) {
+    public void editSpecificationId(int sellerId, int sourceSkuId, int targetSkuId) {
         int buyerId = RequestHeaderUtil.getBuyerId();
-        shoppingCartService.editSpecificationId(buyerId, shoppingItemId, specificationId);
+        shoppingCartService.editSkuId(buyerId, sellerId, sourceSkuId, targetSkuId);
     }
 
     //    @ApiOperation("删除购物车商品")
@@ -77,8 +79,8 @@ public class ShoppingCartController {
 //    @ApiImplicitParams({
 //            @ApiImplicitParam(name = "orderItemIds", value = "购物项id（数组）,例如：[1,2,3]")
 //    })
-    public void deleteItems(@RequestBody List<Long> orderItemIds) {
+    public void deleteItems(@RequestBody Map<Integer, Set<Integer>> shoppingMap) {
         int buyerId = RequestHeaderUtil.getBuyerId();
-        shoppingCartService.deleteCartItems(buyerId, orderItemIds);
+        shoppingCartService.deleteCartItems(buyerId, shoppingMap);
     }
 }

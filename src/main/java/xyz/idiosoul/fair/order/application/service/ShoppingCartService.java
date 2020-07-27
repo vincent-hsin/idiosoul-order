@@ -3,6 +3,8 @@ package xyz.idiosoul.fair.order.application.service;
 import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 购物车服务-接口
@@ -24,14 +26,14 @@ public interface ShoppingCartService {
      *
      * @param quantity
      */
-    void editQuantity(int buyerId, int shoppingItemId, int quantity);
+    void editQuantity(int buyerId, int sellerId, int skuId, int quantity);
 
     /**
      * 修改规格
      *
      * @param specificationId
      */
-    void editSpecificationId(int buyerId, int shoppingItemId, int specificationId);
+    void editSkuId(int buyerId, int sellerId, int sourceSkuId, int targetSkuId);
 
     /**
      * 获取购物项数量
@@ -45,5 +47,5 @@ public interface ShoppingCartService {
      *
      * @param orderItemIds
      */
-    void deleteCartItems(int buyerId, List<Long> orderItemIds);
+    void deleteCartItems(int buyerId, Map<Integer, Set<Integer>> shoppingMap);
 }

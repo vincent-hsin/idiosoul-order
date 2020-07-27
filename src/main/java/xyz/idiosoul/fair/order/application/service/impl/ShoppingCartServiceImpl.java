@@ -1,7 +1,6 @@
 package xyz.idiosoul.fair.order.application.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.idiosoul.fair.order.application.service.ProductService;
@@ -13,9 +12,12 @@ import xyz.idiosoul.fair.order.domain.model.user.CustomerFactory;
 import xyz.idiosoul.fair.order.dto.CartAddDTO;
 import xyz.idiosoul.fair.order.dto.ShopDTO;
 import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
+import xyz.idiosoul.fair.order.dto.ShoppingItemDTO;
 import xyz.idiosoul.fair.order.dto.SkuDetail;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * 购物车服务-实现
@@ -74,32 +76,32 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     @Transactional
-    public void editQuantity(int buyerId, int shoppingItemId, int quantity) {
+    public void editQuantity(int buyerId, int sellerId, int skuId, int quantity) {
         Customer customer = customerFactory.getCustomer(buyerId);
         ShoppingCart shoppingCart = customer.getShoppingCart();
-        shoppingCart.editShoppingItemQuantity(shoppingItemId, quantity);
+        shoppingCart.editShoppingItemQuantity(sellerId, skuId, quantity);
     }
 
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void editSpecificationId(int buyerId, int shoppingItemId, int specificationId) {
+    public void editSkuId(int buyerId, int sellerId, int sourceSkuId, int targetSkuId) {
         // 取规格信息
-        SkuDetail fairSkuDetail = ProductService.getSkuDetail(specificationId);
+        SkuDetail fairSkuDetail = ProductService.getSkuDetail(sourceSkuId);
         String specificationName = fairSkuDetail.getSpecificationName();
         String specificationValue = fairSkuDetail.getSpecificationValue();
 
         Customer customer = customerFactory.getCustomer(buyerId);
         ShoppingCart shoppingCart = customer.getShoppingCart();
-        shoppingCart.editShoppingItemSku(shoppingItemId, specificationId);
+        shoppingCart.editShoppingItemSku(sellerId, sourceSkuId,targetSkuId);
     }
 
 
     @Override
     @Transactional
-    public void deleteCartItems(int buyerId, List<Long> orderItemIds) {
+    public void deleteCartItems(int buyerId, Map<Integer, Set<Integer>> shoppingMap) {
         Customer customer = customerFactory.getCustomer(buyerId);
         ShoppingCart shoppingCart = customer.getShoppingCart();
-        shoppingCart.deleteShoppingItems(orderItemIds);
+        shoppingCart.deleteShoppingItems(shoppingMap);
     }
 }

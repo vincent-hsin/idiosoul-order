@@ -22,8 +22,13 @@ import xyz.idiosoul.fair.order.repository.PaymentRepository;
 import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 
@@ -48,12 +53,6 @@ class ShoppingCartServiceImplTest {
 
         @Bean
         public CustomerFactory customerFactory() {
-            ShoppingGroup shoppingGroup = new ShoppingGroup(1, 1);
-            Mockito.when(shoppingGroupRepository.save(any()))
-                    .thenReturn(shoppingGroup);
-            List<ShoppingGroup> shoppingGroups = new ArrayList<>();
-            Mockito.when(shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(anyInt())).thenReturn(shoppingGroups);
-
             return new CustomerFactory(shoppingCartFactory(), addressRepository, paymentRepository);
         }
 
@@ -64,6 +63,20 @@ class ShoppingCartServiceImplTest {
 
         @Bean
         public ShoppingGroupFactory shoppingGroupFactory() {
+            ShoppingGroup shoppingGroup = new ShoppingGroup(1, 1);
+            ShoppingItemAddDTO shoppingItemAddDTO = new ShoppingItemAddDTO(1, 1L, 9);
+            shoppingGroup.add(shoppingItemAddDTO);
+            Mockito.when(shoppingGroupRepository.save(any()))
+                    .thenReturn(shoppingGroup);
+            List<ShoppingGroup> shoppingGroups = new ArrayList<>();
+            for(int i=2; i<=10;i++){
+                ShoppingGroup sg = new ShoppingGroup(1, i);
+                sg.add(shoppingItemAddDTO);
+                shoppingGroups.add(shoppingGroup);
+            }
+
+            Mockito.when(shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(anyInt())).thenReturn(shoppingGroups);
+
             return new ShoppingGroupFactory(shoppingGroupRepository);
         }
 
@@ -91,17 +104,26 @@ class ShoppingCartServiceImplTest {
 
     @Test
     void getCartItemCount() {
+        int cartItemCount = shoppingCartService.getCartItemCount(1);
+        assertThat(cartItemCount).isEqualTo(9);
     }
 
     @Test
     void editQuantity() {
+        shoppingCartService.editQuantity(1,1,1,8);
     }
 
     @Test
-    void editSpecificationId() {
+    void editSkuId() {
+        shoppingCartService.editSkuId(1,1,1,10);
     }
 
     @Test
     void deleteCartItems() {
+        Map<Integer, Set<Integer>> shoppingMap = new HashMap<>();
+        Set<Integer> items = new HashSet<>();
+        items.add(1);
+        shoppingMap.put(1,items);
+        shoppingCartService.deleteCartItems(1,shoppingMap);
     }
 }
