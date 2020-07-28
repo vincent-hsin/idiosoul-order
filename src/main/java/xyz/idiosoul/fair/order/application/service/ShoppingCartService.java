@@ -31,7 +31,6 @@ public interface ShoppingCartService {
     /**
      * 修改规格
      *
-     * @param specificationId
      */
     void editSkuId(int buyerId, int sellerId, int sourceSkuId, int targetSkuId);
 
@@ -45,7 +44,7 @@ public interface ShoppingCartService {
     /**
      * 删除
      *
-     * @param orderItemIds
+     * @param shoppingMap
      */
     void deleteCartItems(int buyerId, Map<Integer, Set<Integer>> shoppingMap);
 }

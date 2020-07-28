@@ -1,26 +1,25 @@
 package xyz.idiosoul.fair.order.domain.model.cart;
 
 import org.springframework.stereotype.Component;
-import xyz.idiosoul.fair.order.repository.ShoppingGroupRepository;
 
 import java.util.List;
 
 /**
+ * 购物车 Factory
+ *
  * @author vincent
  */
 @Component
 public class ShoppingCartFactory {
     private ShoppingGroupFactory shoppingGroupFactory;
-    private ShoppingGroupRepository shoppingGroupRepository;
 
-    public ShoppingCartFactory(ShoppingGroupFactory shoppingGroupFactory, ShoppingGroupRepository shoppingGroupRepository) {
+    public ShoppingCartFactory(ShoppingGroupFactory shoppingGroupFactory) {
         this.shoppingGroupFactory = shoppingGroupFactory;
-        this.shoppingGroupRepository = shoppingGroupRepository;
     }
 
-    public ShoppingCart getShoppingCart(int userId) {
+    public ShoppingCart getShoppingCart(int buyerId) {
         List<ShoppingGroup> shoppingGroups =
-                shoppingGroupRepository.findAllByBuyerIdAndDeletedFalse(userId);
+                shoppingGroupFactory.getShoppingGroups(buyerId);
         return new ShoppingCart(shoppingGroupFactory, shoppingGroups);
     }
 }

@@ -2,12 +2,16 @@ package xyz.idiosoul.fair.order.domain.model.cart;
 
 import xyz.idiosoul.fair.order.dto.CartAddDTO;
 import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
-import xyz.idiosoul.fair.order.dto.ShoppingItemDTO;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+/**
+ * 购物车 Entity
+ *
+ * @author vincent
+ */
 public class ShoppingCart {
     private ShoppingGroupFactory shoppingGroupFactory;
     private List<ShoppingGroup> shoppingGroups;
@@ -32,14 +36,14 @@ public class ShoppingCart {
     }
 
     public void editShoppingItemSku(int sellerId, int sourceSkuId, int targetSkuId) {
-        ShoppingItem shoppingItem = getShoppingItem(sellerId,sourceSkuId);
+        ShoppingItem shoppingItem = getShoppingItem(sellerId, sourceSkuId);
         shoppingItem.editSpecification(targetSkuId);
     }
 
     public void deleteShoppingItems(Map<Integer, Set<Integer>> shoppingMap) {
-        shoppingMap.entrySet().forEach(shoppingItems->{
-            shoppingGroups.stream().filter(shoppingGroup -> shoppingGroup.getSellerId() == shoppingItems.getKey()).findAny().orElseThrow(()->new RuntimeException("购物项不存在")).getShoppingItems().stream().forEach(shoppingItem -> {
-                if(shoppingItems.getValue().contains(shoppingItem.getSkuId() )){
+        shoppingMap.entrySet().forEach(shoppingItems -> {
+            shoppingGroups.stream().filter(shoppingGroup -> shoppingGroup.getSellerId() == shoppingItems.getKey()).findAny().orElseThrow(() -> new RuntimeException("购物项不存在")).getShoppingItems().stream().forEach(shoppingItem -> {
+                if (shoppingItems.getValue().contains(shoppingItem.getSkuId())) {
                     shoppingItem.delete();
                 }
             });
@@ -56,6 +60,6 @@ public class ShoppingCart {
     }
 
     public int countShoppingItems() {
-        return shoppingGroups.stream().mapToInt(ShoppingGroup::getItemCount).sum();
+        return shoppingGroups.stream().mapToInt(ShoppingGroup::countItems).sum();
     }
 }

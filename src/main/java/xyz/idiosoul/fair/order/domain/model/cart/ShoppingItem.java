@@ -21,7 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
- * 购物项（domain model）
+ * 购物项 Entity
  */
 @Getter
 @ToString
@@ -46,7 +46,7 @@ public class ShoppingItem extends EntityBase<Long> {
         this.createTime = LocalDateTime.now();
     }
 
-    public ShoppingItem( Long skuId,BigDecimal unitPrice, Integer quantity) {
+    public ShoppingItem(Long skuId, BigDecimal unitPrice, Integer quantity) {
         this.productId = productId;
         this.productName = productName;
         this.skuId = skuId;

@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 购物车购物组（domain model）
+ * 购物车购物组 Entity
  */
 @Getter
 @Entity
@@ -54,7 +54,7 @@ public class ShoppingGroup extends EntityBase<Long> {
         return shoppingItems.stream().mapToInt(ShoppingItem::getQuantity).sum();
     }
 
-    public Integer getItemCount() {
+    public Integer countItems() {
         return shoppingItems.size();
     }
 
