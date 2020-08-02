@@ -3,20 +3,10 @@ package xyz.idiosoul.fair.order.domain.model.user;
 import lombok.Getter;
 import xyz.idiosoul.fair.order.constant.PaymentChannelEnum;
 import xyz.idiosoul.fair.order.domain.model.address.ShippingAddress;
-import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCart;
-import xyz.idiosoul.fair.order.domain.model.cart.ShoppingCartFactory;
-import xyz.idiosoul.fair.order.domain.model.cart.ShoppingGroup;
-import xyz.idiosoul.fair.order.domain.model.cart.ShoppingItem;
 import xyz.idiosoul.fair.order.domain.model.order.Order;
 import xyz.idiosoul.fair.order.domain.model.payment.Payment;
-import xyz.idiosoul.fair.order.dto.CartAddDTO;
-import xyz.idiosoul.fair.order.dto.ShoppingItemAddDTO;
-import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
-import xyz.idiosoul.fair.order.repository.LineItemRepository;
 import xyz.idiosoul.fair.order.repository.PaymentRepository;
-import xyz.idiosoul.fair.order.repository.RequestEventRepository;
-import xyz.idiosoul.fair.order.repository.RequestRepository;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -33,18 +23,15 @@ public class Customer {
 
     private AddressRepository addressRepository;
     private PaymentRepository paymentRepository;
-    private ShoppingCartFactory shoppingCartFactory;
 
 
     Customer(int userId,
              AddressRepository addressRepository,
 
-             PaymentRepository paymentRepository,
-ShoppingCartFactory shoppingCartFactory) {
+             PaymentRepository paymentRepository) {
         this.userId = userId;
         this.addressRepository = addressRepository;
         this.paymentRepository = paymentRepository;
-        this.shoppingCartFactory = shoppingCartFactory;
     }
 
     /**
@@ -84,12 +71,12 @@ ShoppingCartFactory shoppingCartFactory) {
 
     }
 
-    /**
-     * 获取购物车
-     *
-     * @return
-     */
-    public ShoppingCart getShoppingCart() {
-        return shoppingCartFactory.getShoppingCart(userId);
-    }
+//    /**
+//     * 获取购物车
+//     *
+//     * @return
+//     */
+//    public ShoppingCart getShoppingCart() {
+//        return shoppingCartFactory.getShoppingCart(userId);
+//    }
 }

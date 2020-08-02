@@ -25,7 +25,7 @@ public class RequestHeaderUtil {
      *
      * @return
      */
-    public static int getBuyerId() {
+    public static int getCustomerId() {
         return 1;
 //        String buyerId = getHeaderValue("userId");
 //        if (Objects.isNull(buyerId)) {

@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Getter
 @ToString
 @Entity
-public class ShoppingItem extends EntityBase<Long> {
+public class CartItem extends EntityBase<Long> {
     private Long productId;
     private String productName;
     private Long skuId;
@@ -36,17 +36,17 @@ public class ShoppingItem extends EntityBase<Long> {
     private BigDecimal unitPrice;
     private Integer quantity;
 
-    protected ShoppingItem() {
+    protected CartItem() {
         // for Hibernate
     }
 
-    public ShoppingItem(Long skuId) {
+    public CartItem(Long skuId) {
         this.skuId = skuId;
         this.quantity = 0;
         this.createTime = LocalDateTime.now();
     }
 
-    public ShoppingItem(Long skuId, BigDecimal unitPrice, Integer quantity) {
+    public CartItem(Long skuId, BigDecimal unitPrice, Integer quantity) {
         this.productId = productId;
         this.productName = productName;
         this.skuId = skuId;

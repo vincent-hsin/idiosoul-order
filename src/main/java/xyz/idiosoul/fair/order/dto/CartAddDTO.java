@@ -37,15 +37,15 @@ public class CartAddDTO {
     private Integer dataSpace;
     private String clientChannel;
 
-    public CartAddDTO(int buyerId, Integer shopId, String shopName,
+    public CartAddDTO(int buyerId,
 //                      Long productId,
 //                      String productName,
 //                      String productImage,
                       Long specificationId, String specificationName,
                       String specificationValue, Integer quantity, BigDecimal unitPrice) {
         this.buyerId = buyerId;
-        this.shopId = shopId;
-        this.shopName = shopName;
+//        this.shopId = shopId;
+//        this.shopName = shopName;
 //        this.productId = productId;
 //        this.productName = productName;
 //        this.productImage = productImage;

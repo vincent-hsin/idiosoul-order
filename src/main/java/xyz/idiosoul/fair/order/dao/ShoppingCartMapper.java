@@ -14,7 +14,7 @@ public interface ShoppingCartMapper {
      * @param buyerId
      * @return
      */
-    List<ShoppingGroupOfShopVO> getShoppingCartByBuyerIdAndDataSpace(@Param("buyerId") int buyerId);
+    List<ShoppingGroupOfShopVO> getShoppingCartByBuyerIdAndDataSpace(int customerId);
 
     List<ShoppingGroupOfShopVO> getShoppingCartByBuyerItemIds(@Param("itemIds") List<Long> itemIds);
 }

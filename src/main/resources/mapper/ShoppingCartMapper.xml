@@ -23,11 +23,11 @@
     </resultMap>
 
 
-    <select id="getShoppingCartByBuyerIdAndDataSpace" resultMap="shoppingCartResultMap">
-        SELECT oh.seller_id AS shop_id, oh.seller_name AS shop_name, oi.id as item_id, oi.product_id, oi.product_name,
-        oi.sku_id AS specification_id, oi.specification_name, oi.specification_value,oi.quantity,oi.product_image,oi.unit_price
-        FROM shopping_group oh, shopping_item oi
-        WHERE oh.id = oi.shopping_group_id AND oh.is_deleted = 0 AND oi.is_deleted = 0 AND oh.buyer_id = #{buyerId}
+    <select id="getShoppingCartByBuyerIdAndDataSpace" resultType="xyz.idiosoul.fair.order.vo.ShoppingItemVO">
+        SELECT oi.id AS item_id, oi.product_id, oi.product_name,
+        oi.sku_id, oi.specification_name, oi.specification_value,oi.quantity,oi.product_image,oi.unit_price
+        FROM cart c, cart_item oi
+        WHERE c.id = oi.cart_id AND c.is_deleted = 0 AND oi.is_deleted = 0 AND c.customer_id = #{customerId}
         ORDER BY GREATEST(oi.modify_time,oi.create_time) DESC
     </select>
 
