@@ -60,6 +60,10 @@ public class Cart extends EntityBase<Long> {
         return cartItems.stream().filter(cartItem -> cartItem.isDeleted() == false).collect(Collectors.toList());
     }
 
+    public List<CartItem> getCartItems(List<Long> cartItemIds) {
+        return cartItems.stream().filter(cartItem -> cartItem.isDeleted() == false && cartItemIds.contains(cartItem.getId())).collect(Collectors.toList());
+    }
+
     private CartItem getCartItem(int skuId) {
         return cartItems.stream().filter(cartItem -> cartItem.getSkuId() == skuId).findAny().orElseThrow(() -> new RuntimeException("购物项不存在"));
     }

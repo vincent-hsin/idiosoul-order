@@ -17,14 +17,12 @@ import java.util.stream.Collectors;
 
 @Getter
 @Entity
-@DiscriminatorColumn(name = "type", discriminatorType = DiscriminatorType.INTEGER)
-@Inheritance
+@Table(name = "order_header")
 public class Order extends EntityBase<Long> {
     /* primary */
-    protected byte type;
     protected String number;
-    protected byte status;
-    protected Integer buyerId, sellerId;
+    protected Byte status;
+    protected Integer customerId, sellerId;
     protected BigDecimal goodsAmount, deliveryCost;
     protected Long couponId, pointsPaymentId, walletPaymentId;
     protected BigDecimal couponDiscountAmount, pointsPaymentAmount, walletPaymentAmount, memberDiscountAmount;
@@ -39,8 +37,6 @@ public class Order extends EntityBase<Long> {
     protected LocalDateTime processDeadline, receiveTime;
     protected String buyerRemark, sellerRemark, platRemark;
     protected Byte starCount;
-    @Column(name = "is_reviewed")
-    private boolean reviewed;
     protected String receiverAddress, receiverName, receiverMobile; // 配送信息
 
     /* 发票信息 */
@@ -54,11 +50,6 @@ public class Order extends EntityBase<Long> {
     @JoinColumn(name = "order_id")
     protected List<LineItem> lineItems = new ArrayList<>();
 
-    /* 渠道信息 */
-    protected Integer platformId;
-    protected Integer dataSpace;
-    protected String clientChannel;
-
     /* redundant */
     protected String buyerName, buyerMobile, sellerName;
 
@@ -66,11 +57,16 @@ public class Order extends EntityBase<Long> {
         // for Hibernate
     }
 
+    public Order(int customerId) {
+        this.customerId = customerId;
+        this.createTime = LocalDateTime.now();
+    }
+
     /**
      * 通用订单
      *
      * @param number
-     * @param buyerId
+     * @param customerId
      * @param sellerId
      * @param sellerName
      * @param goodsAmount
@@ -88,14 +84,14 @@ public class Order extends EntityBase<Long> {
      * @param dataSpace
      * @param clientChannel
      */
-    protected Order(String number, Integer buyerId, Integer sellerId, String sellerName, BigDecimal goodsAmount,
+    protected Order(String number, Integer customerId, Integer sellerId, String sellerName, BigDecimal goodsAmount,
                     BigDecimal deliveryCost, Long couponId, BigDecimal couponDiscountAmount,
                     Long walletPaymentId, BigDecimal walletPaymentAmount, Long pointsPaymentId,
                     BigDecimal pointsPaymentAmount, LocalDateTime processDeadline, ShippingAddress shippingAddress,
                     Invoice invoice, String buyerRemark, Integer platformId, Integer dataSpace, String clientChannel, Long parentId,
                     Integer groupThreshold) {
         this.number = number;
-        this.buyerId = buyerId;
+        this.customerId = customerId;
         this.sellerId = sellerId;
         this.sellerName = sellerName;
 
@@ -111,10 +107,6 @@ public class Order extends EntityBase<Long> {
 
         this.processDeadline = processDeadline;
         this.buyerRemark = buyerRemark;
-
-        this.platformId = platformId;
-        this.dataSpace = dataSpace;
-        this.clientChannel = clientChannel;
 
         this.parentId = parentId;
         this.groupThreshold = groupThreshold;
@@ -148,7 +140,7 @@ public class Order extends EntityBase<Long> {
      * 单独购买订单
      *
      * @param number
-     * @param buyerId
+     * @param customerId
      * @param sellerId
      * @param sellerName
      * @param goodsAmount
@@ -166,7 +158,7 @@ public class Order extends EntityBase<Long> {
      * @param dataSpace
      * @param clientChannel
      */
-    protected Order(String number, Integer buyerId, Integer sellerId,
+    protected Order(String number, Integer customerId, Integer sellerId,
                     String sellerName, BigDecimal goodsAmount,
                     BigDecimal deliveryCost, Long couponId, BigDecimal couponDiscountAmount,
                     Long walletPaymentId, BigDecimal walletPaymentAmount, Long pointsPaymentId,
@@ -174,7 +166,7 @@ public class Order extends EntityBase<Long> {
                     Invoice invoice, String buyerRemark,
                     Integer platformId,
                     Integer dataSpace, String clientChannel) {
-        this(number, buyerId, sellerId, sellerName, goodsAmount, deliveryCost, couponId, couponDiscountAmount,
+        this(number, customerId, sellerId, sellerName, goodsAmount, deliveryCost, couponId, couponDiscountAmount,
                 walletPaymentId, walletPaymentAmount, pointsPaymentId, pointsPaymentAmount, processDeadline,
                 shippingAddress, invoice, buyerRemark, platformId, dataSpace, clientChannel, null, null);
     }
@@ -193,9 +185,6 @@ public class Order extends EntityBase<Long> {
         this.processDeadline = null;
     }
 
-    public void markAsReviewed() {
-        this.reviewed = true;
-    }
 
     public void groupBuySuccess() {
         throw new RuntimeException("此订单类型不支持团购");

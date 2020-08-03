@@ -55,6 +55,12 @@ public class LineItem extends EntityBase<Long> {
     protected LineItem() {
     }
 
+    public LineItem(Long skuId, Integer quantity) {
+        this.skuId = skuId;
+        this.quantity = quantity;
+//        this.status = OrderStatusEnum.SUBMITTED.getValue();
+    }
+
     public LineItem(Long skuId, Integer quantity, Long productId, Long promotionProductId, String productName,
                     String specificationName, String specificationValue, BigDecimal unitPrice, String productImage) {
         this.skuId = skuId;

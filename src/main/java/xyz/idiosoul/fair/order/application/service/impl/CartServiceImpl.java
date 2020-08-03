@@ -7,7 +7,9 @@ import xyz.idiosoul.fair.order.application.service.CartService;
 import xyz.idiosoul.fair.order.domain.model.cart.Cart;
 import xyz.idiosoul.fair.order.domain.model.cart.CartFactory;
 import xyz.idiosoul.fair.order.dto.CartItemAddDTO;
+import xyz.idiosoul.fair.order.vo.CheckoutVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -59,5 +61,10 @@ public class CartServiceImpl implements CartService {
     public void deleteCartItems(int customerId, Set<Long> skuIds) {
         Cart cart = cartFactory.ofCustomer(customerId);
         cart.delete(skuIds);
+    }
+
+    @Override
+    public CheckoutVO checkout(int customerId, List<Long> cartItemIds) {
+        return null;
     }
 }

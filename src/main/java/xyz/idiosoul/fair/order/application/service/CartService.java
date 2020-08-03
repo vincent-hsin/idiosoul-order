@@ -1,7 +1,9 @@
 package xyz.idiosoul.fair.order.application.service;
 
 import xyz.idiosoul.fair.order.dto.CartItemAddDTO;
+import xyz.idiosoul.fair.order.vo.CheckoutVO;
 
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -41,4 +43,12 @@ public interface CartService {
      * 删除
      */
     void deleteCartItems(int customerId, Set<Long> skuIds);
+
+    /**
+     * 购物车结算 todo reflect
+     *
+     * @param cartItemIds
+     * @return
+     */
+    CheckoutVO checkout(int customerId, List<Long> cartItemIds);
 }
