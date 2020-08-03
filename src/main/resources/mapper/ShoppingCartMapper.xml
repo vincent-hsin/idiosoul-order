@@ -24,8 +24,7 @@
 
 
     <select id="getShoppingCartByBuyerIdAndDataSpace" resultType="xyz.idiosoul.fair.order.vo.ShoppingItemVO">
-        SELECT oi.id AS item_id, oi.product_id, oi.product_name,
-        oi.sku_id, oi.specification_name, oi.specification_value,oi.quantity,oi.product_image,oi.unit_price
+        SELECT oi.id AS item_id, oi.sku_id, oi.quantity
         FROM cart c, cart_item oi
         WHERE c.id = oi.cart_id AND c.is_deleted = 0 AND oi.is_deleted = 0 AND c.customer_id = #{customerId}
         ORDER BY GREATEST(oi.modify_time,oi.create_time) DESC

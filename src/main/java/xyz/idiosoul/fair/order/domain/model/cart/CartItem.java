@@ -17,6 +17,7 @@ import lombok.ToString;
 import xyz.idiosoul.fair.order.infrastructure.EntityBase;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,13 +28,7 @@ import java.time.LocalDateTime;
 @ToString
 @Entity
 public class CartItem extends EntityBase<Long> {
-    private Long productId;
-    private String productName;
     private Long skuId;
-    private String specificationName;
-    private String specificationValue;
-    private String productImage;
-    private BigDecimal unitPrice;
     private Integer quantity;
 
     protected CartItem() {
@@ -46,14 +41,8 @@ public class CartItem extends EntityBase<Long> {
         this.createTime = LocalDateTime.now();
     }
 
-    public CartItem(Long skuId, BigDecimal unitPrice, Integer quantity) {
-        this.productId = productId;
-        this.productName = productName;
+    public CartItem(Long skuId, Integer quantity) {
         this.skuId = skuId;
-        this.specificationName = specificationName;
-        this.specificationValue = specificationValue;
-        this.productImage = productImage;
-        this.unitPrice = unitPrice;
         this.quantity = quantity;
         this.createTime = LocalDateTime.now();
     }
@@ -71,9 +60,4 @@ public class CartItem extends EntityBase<Long> {
         this.quantity += quantity;
     }
 
-    public void updateUnitPrice(BigDecimal unitPrice) {
-        if (!this.unitPrice.equals(unitPrice)) {
-            this.unitPrice = unitPrice;
-        }
-    }
 }

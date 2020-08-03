@@ -17,17 +17,11 @@ import xyz.idiosoul.fair.order.application.service.ShopService;
 import xyz.idiosoul.fair.order.application.service.CartService;
 import xyz.idiosoul.fair.order.domain.model.cart.Cart;
 import xyz.idiosoul.fair.order.domain.model.cart.CartFactory;
-import xyz.idiosoul.fair.order.domain.model.user.CustomerFactory;
 import xyz.idiosoul.fair.order.dto.CartItemAddDTO;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
-import xyz.idiosoul.fair.order.repository.PaymentRepository;
 import xyz.idiosoul.fair.order.repository.CartRepository;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -65,8 +59,6 @@ class CartServiceImplTest {
 
         @MockBean
         private AddressRepository addressRepository;
-        @MockBean
-        private PaymentRepository paymentRepository;
     }
 
     @MockBean

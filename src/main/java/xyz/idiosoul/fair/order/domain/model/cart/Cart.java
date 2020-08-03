@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -21,11 +22,10 @@ import java.util.stream.Collectors;
 @Entity
 public class Cart extends EntityBase<Long> {
     private Integer customerId;
-    protected String buyerName;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "cart_id")
-    private List<CartItem> cartItems;
+    private List<CartItem> cartItems = new ArrayList<>();;
 
     protected Cart() {
         // for Hibernate
@@ -33,12 +33,10 @@ public class Cart extends EntityBase<Long> {
 
     public Cart(Integer customerId) {
         this.customerId = customerId;
+        this.createTime = LocalDateTime.now();
     }
 
     public void add(CartItemAddDTO cartItemAddDTO) {
-        if (cartItems == null) {
-            this.cartItems = new ArrayList<>();
-        }
         CartItem cartItem =
                 cartItems.stream().filter(si -> si.getSkuId().equals(cartItemAddDTO.getSkuId()) && si.isDeleted() == false).findAny().orElse(new CartItem(cartItemAddDTO.getSkuId()));
         cartItem.addQuantity(cartItemAddDTO.getQuantity());
@@ -51,23 +49,14 @@ public class Cart extends EntityBase<Long> {
      * @return
      */
     public Integer getPieceCount() {
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
         return cartItems.stream().mapToInt(CartItem::getQuantity).sum();
     }
 
     public Integer countItems() {
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
         return cartItems.size();
     }
 
     public List<CartItem> getCartItems() {
-        if (cartItems == null) {
-            cartItems = new ArrayList<>();
-        }
         return cartItems.stream().filter(cartItem -> cartItem.isDeleted() == false).collect(Collectors.toList());
     }
 

@@ -16,7 +16,7 @@ public class ShoppingItemVO {
 //    @ApiModelProperty("商品id")
     private Long skuId;
 //    @ApiModelProperty("商品单价")
-    private BigDecimal unitPrice;
+//    private BigDecimal unitPrice;
 //    @ApiModelProperty("购买数量")
     private Integer quantity;
 }
