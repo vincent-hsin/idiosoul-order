@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<!--
-  ~ 2016-2018 江西侬农网科技有限公司。ALL Rights Reserved
-  -->
-
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="xyz.idiosoul.fair.order.dao.ShoppingCartMapper">
 

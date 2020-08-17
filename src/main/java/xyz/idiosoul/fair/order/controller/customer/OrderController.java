@@ -4,16 +4,13 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.idiosoul.fair.order.application.service.OrderService;
+import xyz.idiosoul.fair.order.dao.OrderMapper;
 import xyz.idiosoul.fair.order.dto.OrderAddDTO;
 import xyz.idiosoul.fair.order.util.RequestHeaderUtil;
-
-import java.math.BigDecimal;
-import java.util.List;
+import xyz.idiosoul.fair.order.vo.OrderDetail4CustomerVO;
 
 /**
  * 集市订单买家接口
@@ -24,15 +21,26 @@ import java.util.List;
 @RequestMapping("api/v1.0/customer/order")
 public class OrderController {
     private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderMapper orderMapper) {
         this.orderService = orderService;
+        this.orderMapper = orderMapper;
     }
 
 //    @ApiOperation("提交订单")
     @PostMapping
     public long placeOrder(@RequestBody OrderAddDTO orderAddDTO) {
-        return orderService.placeOrder(RequestHeaderUtil.getCustomerId(),orderAddDTO.getAddressId(),
+        int customerId = RequestHeaderUtil.getCustomerId();
+        return orderService.placeOrder(customerId,orderAddDTO.getAddressId(),
                 orderAddDTO.getCartItems());
+    }
+
+//    @ApiOperation("订单详情")
+    @GetMapping
+//    @ApiImplicitParam(name = "orderId", value = "订单id")
+    public OrderDetail4CustomerVO detail(long orderId) {
+        int customerId = RequestHeaderUtil.getCustomerId();
+        return orderMapper.getOrderDetail4Customer(customerId, orderId);
     }
 }

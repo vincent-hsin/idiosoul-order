@@ -35,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
         Cart cart = cartFactory.ofCustomer(customerId);
         Order order = orderFactory.ofCustomer(customerId);
         List<CartItem> cartItems = cart.getCartItems(cartItemIds);
+        if(cartItemIds.size() == 0){
+            throw new RuntimeException("购物项不存在");
+        }
         List<LineItem> lineItems = new ArrayList<>();
         cartItems.forEach(cartItem -> {
             lineItems.add(new LineItem(cartItem.getSkuId(), cartItem.getQuantity()));

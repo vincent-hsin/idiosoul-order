@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.idiosoul.fair.order.dao.OrderMapper">
+    <resultMap id="orderItem4Customer" type="xyz.idiosoul.fair.order.vo.OrderItem4CustomerVO">
+        <id property="itemId" column="item_id"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="quantity" column="quantity"/>
+    </resultMap>
+
+    <resultMap id="orderItemForCustomer" type="xyz.idiosoul.fair.order.vo.OrderItem4CustomerVO">
+        <id property="itemId" column="item_id"/>
+        <result property="unitPrice" column="unit_price"/>
+        <result property="quantity" column="quantity"/>
+    </resultMap>
+
+    <resultMap id="orderDetailCustomerMap" type="xyz.idiosoul.fair.order.vo.OrderDetail4CustomerVO">
+        <result property="orderId" column="order_id"/>
+        <result property="status" column="status"/>
+        <result property="totalAmount" column="total_amount"/>
+        <result property="deliveryCost" column="delivery_cost"/>
+        <result property="processDeadline" column="process_deadline"/>
+        <result property="receiverAddress" column="receiver_address"/>
+        <result property="receiverMobile" column="receiver_mobile"/>
+        <result property="receiverName" column="receiver_name"/>
+        <result property="goodsAmount" column="goods_amount"/>
+        <result property="paidAmount" column="paid_amount"/>
+        <collection property="items" resultMap="orderItemForCustomer"/>
+    </resultMap>
+
+    <select id="getOrderDetail4Customer" resultMap="orderDetailCustomerMap">
+        SELECT *
+        FROM order_header oh
+        JOIN line_item oi ON oh.id = oi.order_id AND oh.is_deleted = 0 AND oi.is_deleted = 0
+        LEFT JOIN payment pt ON oh.payment_id = pt.id AND oh.id = #{orderId} AND oh.customer_id = #{customerId}
+    </select>
+</mapper>
