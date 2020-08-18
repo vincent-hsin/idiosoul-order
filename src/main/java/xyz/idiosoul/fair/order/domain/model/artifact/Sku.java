@@ -12,6 +12,9 @@ import java.math.BigDecimal;
 public class Sku extends EntityBase<Long> {
     int size;
     int color;
+    int style;
     int unit;
+    int brand;
+    int manufacturer;
     BigDecimal price;
 }
