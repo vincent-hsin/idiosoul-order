@@ -6,7 +6,7 @@ import xyz.downgoon.snowflake.Snowflake;
 import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
 
 /**
- * @author xinw
+ * @author vincent
  */
 @Service
 public class SnowflakeNumberGeneratorImpl implements NumberGenerator {

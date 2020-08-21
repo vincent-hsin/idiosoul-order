@@ -21,6 +21,13 @@ public interface CartService {
     void add(int customerId, CartItemAddDTO cartItemAddDTO);
 
     /**
+     * 获取购物项数量
+     *
+     * @return
+     */
+    int getCartItemsCount(int customerId);
+
+    /**
      * 修改数量
      *
      * @param quantity
@@ -31,13 +38,6 @@ public interface CartService {
      * 修改规格
      */
     void editSkuId(int customerId, int sourceSkuId, int targetSkuId);
-
-    /**
-     * 获取购物项数量
-     *
-     * @return
-     */
-    int getCartItemsCount(int customerId);
 
     /**
      * 删除

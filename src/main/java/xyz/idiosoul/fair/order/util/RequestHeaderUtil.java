@@ -35,6 +35,20 @@ public class RequestHeaderUtil {
     }
 
     /**
+     * 获取管理员id
+     *
+     * @return
+     */
+    public static int getAdminId() {
+        return 2;
+//        String buyerId = getHeaderValue("userId");
+//        if (Objects.isNull(buyerId)) {
+//            throw new RuntimeException("请重新登录");
+//        }
+//        return Integer.valueOf(buyerId);
+    }
+
+    /**
      * 获取客户端渠道
      *
      * @return
