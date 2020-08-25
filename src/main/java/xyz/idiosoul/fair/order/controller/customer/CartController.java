@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import xyz.idiosoul.fair.order.application.service.CartService;
-import xyz.idiosoul.fair.order.dao.ShoppingCartMapper;
+import xyz.idiosoul.fair.order.dao.CartMapper;
 import xyz.idiosoul.fair.order.dto.CartItemAddDTO;
 import xyz.idiosoul.fair.order.util.RequestHeaderUtil;
 import xyz.idiosoul.fair.order.vo.ShoppingGroupOfShopVO;
@@ -19,13 +19,13 @@ import java.util.Set;
 //@Api(tags = "顾客-购物车")
 @RestController
 @RequestMapping("api/v1.0/customer/cart")
-public class ShoppingCartController {
+public class CartController {
     private final CartService cartService;
-    private final ShoppingCartMapper shoppingCartMapper;
+    private final CartMapper cartMapper;
 
-    public ShoppingCartController(CartService cartService, ShoppingCartMapper shoppingCartMapper) {
+    public CartController(CartService cartService, CartMapper cartMapper) {
         this.cartService = cartService;
-        this.shoppingCartMapper = shoppingCartMapper;
+        this.cartMapper = cartMapper;
     }
 
     //    @ApiOperation("加入购物车")
@@ -39,7 +39,7 @@ public class ShoppingCartController {
     @GetMapping
     public List<ShoppingGroupOfShopVO> viewItems() {
         int customerId = RequestHeaderUtil.getCustomerId();
-        return shoppingCartMapper.getShoppingCartByBuyerIdAndDataSpace(customerId);
+        return cartMapper.getShoppingCartByBuyerIdAndDataSpace(customerId);
 
     }
 

@@ -7,7 +7,7 @@ import xyz.idiosoul.fair.order.vo.ShoppingGroupOfShopVO;
 import java.util.List;
 
 @Mapper
-public interface ShoppingCartMapper {
+public interface CartMapper {
     /**
      * 获取购物车
      *
