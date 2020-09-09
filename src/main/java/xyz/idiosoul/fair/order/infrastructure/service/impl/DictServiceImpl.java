@@ -23,7 +23,7 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public void add(long adminId, DictLabel dictLabel, DictAddDTO dictAddDTO) {
-        dictRepository.findByLabelAndTextAndDeleteAtIsNull(dictLabel.toString(), dictAddDTO.getText()).ifPresent(dict -> {
+        dictRepository.findByLabelAndText(dictLabel.toString(), dictAddDTO.getText()).ifPresent(dict -> {
             throw new DuplicateKeyException("字典名重复");
         });
         Dict dict = new Dict(dictLabel.toString(), dictAddDTO.getCode(), dictAddDTO.getText(), dictAddDTO.getSeq(), dictAddDTO.getRemark());
@@ -39,11 +39,11 @@ public class DictServiceImpl implements DictService {
 
     @Override
     public Dict get(DictLabel dictLabel, Integer code) {
-        return dictRepository.findByLabelAndCodeAndDeleteAtIsNull(dictLabel.name(), code).orElseThrow(() -> new RuntimeException(String.format("%s不存在code[%d]", dictLabel.getDesc(), code)));
+        return dictRepository.findByLabelAndCode(dictLabel.name(), code).orElseThrow(() -> new RuntimeException(String.format("%s不存在code[%d]", dictLabel.getDesc(), code)));
     }
 
     @Override
     public List<Dict> list(DictLabel label) {
-        return dictRepository.findAllByLabelAndDeleteAtIsNull(label.name());
+        return dictRepository.findAllByLabel(label.name());
     }
 }
