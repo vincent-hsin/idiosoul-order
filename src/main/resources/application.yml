@@ -8,8 +8,14 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*Mapper.xml
 spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:3306/idiosoul
+    username: root
+    password: lovemysql
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: create
 debug: true
 jwt:
   secret: 'fdsagdtsrDFDSFDSewtgfffdfretfdgfdaFDSFDSFDSdfreqreqrfdsagdtsrewtgfffdfIUYRTRETEretfdgfdadfreqreqr'
