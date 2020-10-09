@@ -2,7 +2,7 @@ package xyz.idiosoul.fair.order.domain.model.user;
 
 import lombok.Getter;
 import xyz.idiosoul.fair.order.constant.PaymentChannelEnum;
-import xyz.idiosoul.fair.order.domain.model.address.ShippingAddress;
+import xyz.idiosoul.fair.order.domain.model.address.Address;
 import xyz.idiosoul.fair.order.domain.model.order.Order;
 import xyz.idiosoul.fair.order.domain.model.payment.Payment;
 import xyz.idiosoul.fair.order.repository.AddressRepository;
@@ -40,7 +40,7 @@ public class Customer {
      * @param addressId
      * @return
      */
-    public ShippingAddress getShippingAddress(int addressId) {
+    public Address getShippingAddress(int addressId) {
         return addressRepository.findOptionalByUserIdAndIdAndDeletedIsFalse(userId, addressId).orElseThrow(() -> new RuntimeException("地址不存在"));
     }
 
@@ -49,7 +49,7 @@ public class Customer {
      *
      * @return
      */
-    public ShippingAddress getDefaultShippingAddress() {
+    public Address getDefaultShippingAddress() {
         return addressRepository.findByUserIdAndIsDefaultIsTrueAndDeletedIsFalse(userId);
     }
 
@@ -71,12 +71,11 @@ public class Customer {
 
     }
 
-//    /**
-//     * 获取购物车
-//     *
-//     * @return
-//     */
-//    public ShoppingCart getShoppingCart() {
-//        return shoppingCartFactory.getShoppingCart(userId);
-//    }
+    public Address createShippingAddress(String regionCode, String regionName, String address,
+                                         String contactName,
+                                         String contactMobile) {
+        Address shippingAddress = new Address(userId, regionCode, regionName, address, contactName,
+                contactMobile);
+        return addressRepository.save(shippingAddress);
+    }
 }
