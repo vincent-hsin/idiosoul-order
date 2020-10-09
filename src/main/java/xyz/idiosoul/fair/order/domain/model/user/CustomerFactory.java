@@ -14,7 +14,6 @@ public class CustomerFactory {
         this.paymentRepository = paymentRepository;
     }
 
-
     public Customer getCustomer(int userId) {
         return new Customer(userId, addressRepository,
                 paymentRepository);

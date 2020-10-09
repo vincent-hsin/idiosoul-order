@@ -31,8 +31,8 @@ public class CartController {
     //    @ApiOperation("加入购物车")
     @PostMapping("item")
     public void addItem(@RequestBody CartItemAddDTO cartItemAddDTO) {
-        int buyerId = RequestHeaderUtil.getCustomerId();
-        cartService.add(buyerId, cartItemAddDTO);
+        int customerId = RequestHeaderUtil.getCustomerId();
+        cartService.add(customerId, cartItemAddDTO);
     }
 
     //    @ApiOperation("查看购物车")

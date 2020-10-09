@@ -3,11 +3,16 @@ package xyz.idiosoul.fair.order.domain.model.order;
 import lombok.Getter;
 import lombok.Setter;
 import xyz.idiosoul.fair.order.constant.OrderStatusEnum;
-import xyz.idiosoul.fair.order.domain.model.address.ShippingAddress;
+import xyz.idiosoul.fair.order.domain.model.address.Address;
 import xyz.idiosoul.fair.order.domain.model.delivery.Delivery;
 import xyz.idiosoul.fair.order.infrastructure.EntityBase;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -78,7 +83,7 @@ public class Order extends EntityBase<Long> {
      * @param pointsPaymentId
      * @param pointsPaymentAmount
      * @param processDeadline
-     * @param shippingAddress
+     * @param address
      * @param invoice
      * @param platformId
      * @param dataSpace
@@ -87,7 +92,7 @@ public class Order extends EntityBase<Long> {
     protected Order(String number, Integer customerId, Integer sellerId, String sellerName, BigDecimal goodsAmount,
                     BigDecimal deliveryCost, Long couponId, BigDecimal couponDiscountAmount,
                     Long walletPaymentId, BigDecimal walletPaymentAmount, Long pointsPaymentId,
-                    BigDecimal pointsPaymentAmount, LocalDateTime processDeadline, ShippingAddress shippingAddress,
+                    BigDecimal pointsPaymentAmount, LocalDateTime processDeadline, Address address,
                     Invoice invoice, String buyerRemark, Integer platformId, Integer dataSpace, String clientChannel, Long parentId,
                     Integer groupThreshold) {
         this.number = number;
@@ -111,10 +116,10 @@ public class Order extends EntityBase<Long> {
         this.parentId = parentId;
         this.groupThreshold = groupThreshold;
 
-        if (Objects.nonNull(shippingAddress)) {
-            this.receiverName = shippingAddress.getContactName();
-            this.receiverMobile = shippingAddress.getContactMobile();
-            this.receiverAddress = shippingAddress.getFullAddress();
+        if (Objects.nonNull(address)) {
+            this.receiverName = address.getContactName();
+            this.receiverMobile = address.getContactMobile();
+            this.receiverAddress = address.getFullAddress();
         }
 
         if (Objects.nonNull(invoice)) {
@@ -152,7 +157,7 @@ public class Order extends EntityBase<Long> {
      * @param pointsPaymentId
      * @param pointsPaymentAmount
      * @param processDeadline
-     * @param shippingAddress
+     * @param address
      * @param invoice
      * @param platformId
      * @param dataSpace
@@ -162,13 +167,13 @@ public class Order extends EntityBase<Long> {
                     String sellerName, BigDecimal goodsAmount,
                     BigDecimal deliveryCost, Long couponId, BigDecimal couponDiscountAmount,
                     Long walletPaymentId, BigDecimal walletPaymentAmount, Long pointsPaymentId,
-                    BigDecimal pointsPaymentAmount, LocalDateTime processDeadline, ShippingAddress shippingAddress,
+                    BigDecimal pointsPaymentAmount, LocalDateTime processDeadline, Address address,
                     Invoice invoice, String buyerRemark,
                     Integer platformId,
                     Integer dataSpace, String clientChannel) {
         this(number, customerId, sellerId, sellerName, goodsAmount, deliveryCost, couponId, couponDiscountAmount,
                 walletPaymentId, walletPaymentAmount, pointsPaymentId, pointsPaymentAmount, processDeadline,
-                shippingAddress, invoice, buyerRemark, platformId, dataSpace, clientChannel, null, null);
+                address, invoice, buyerRemark, platformId, dataSpace, clientChannel, null, null);
     }
 
     public void pay(BigDecimal amount) {
