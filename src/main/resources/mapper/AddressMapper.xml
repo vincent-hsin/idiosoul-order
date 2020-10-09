@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="xyz.idiosoul.fair.order.dao.AddressMapper">
+
+    <select id="listAddresses" resultType="xyz.idiosoul.fair.order.vo.AddressVO">
+        SELECT id AS address_id, contact_name, contact_mobile, region_code AS region, region_name,
+        CONCAT(region_name,address) AS full_address, address, is_default
+        FROM t_order_address
+        WHERE user_id = #{userId} AND is_deleted = 0
+        ORDER BY is_default DESC, create_time DESC
+    </select>
+</mapper>
