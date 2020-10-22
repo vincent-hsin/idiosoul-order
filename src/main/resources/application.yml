@@ -13,5 +13,3 @@ spring:
   jpa:
     show-sql: true
 debug: true
-jwt:
-  secret: 'fdsagdtsrDFDSFDSewtgfffdfretfdgfdaFDSFDSFDSdfreqreqrfdsagdtsrewtgfffdfIUYRTRETEretfdgfdadfreqreqr'
