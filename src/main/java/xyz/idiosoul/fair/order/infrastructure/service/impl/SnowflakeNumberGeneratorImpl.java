@@ -10,9 +10,9 @@ import xyz.idiosoul.fair.order.infrastructure.service.NumberGenerator;
  */
 @Service
 public class SnowflakeNumberGeneratorImpl implements NumberGenerator {
-    Snowflake snowflake;
+    private Snowflake snowflake;
 
-    public SnowflakeNumberGeneratorImpl(@Value("${worker.id}") int workerId) {
+    public SnowflakeNumberGeneratorImpl(@Value("${worker.id:1}") int workerId) {
         snowflake = new Snowflake(1, workerId);
     }
 
