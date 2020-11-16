@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import xyz.idiosoul.fair.order.application.service.ProductService;
 import xyz.idiosoul.fair.order.application.service.ShopService;
@@ -38,8 +40,8 @@ class CartServiceImplTest {
     @TestConfiguration
     static class ShoppingCartServiceImplTestContextConfiguration {
         @Bean
-        public CartService cartService(CartFactory cartFactory) {
-            return new CartServiceImpl(cartFactory);
+        public CartService cartService(CartFactory cartFactory, StringRedisTemplate stringRedisTemplate) {
+            return new CartServiceImpl(cartFactory, stringRedisTemplate);
         }
 
         @Bean

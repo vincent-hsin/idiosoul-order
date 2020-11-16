@@ -1,9 +1,12 @@
 package xyz.idiosoul.fair.order.application.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import xyz.idiosoul.fair.order.application.service.CartService;
+import xyz.idiosoul.fair.order.constant.RedisKeyConsts;
 import xyz.idiosoul.fair.order.domain.model.cart.Cart;
 import xyz.idiosoul.fair.order.domain.model.cart.CartFactory;
 import xyz.idiosoul.fair.order.dto.CartItemAddDTO;
@@ -21,9 +24,11 @@ import java.util.Set;
 @Service
 public class CartServiceImpl implements CartService {
     private final CartFactory cartFactory;
+    private final StringRedisTemplate stringRedisTemplate;
 
-    public CartServiceImpl(CartFactory cartFactory) {
+    public CartServiceImpl(CartFactory cartFactory, StringRedisTemplate stringRedisTemplate) {
         this.cartFactory = cartFactory;
+        this.stringRedisTemplate = stringRedisTemplate;
     }
 
     @Override
@@ -31,6 +36,7 @@ public class CartServiceImpl implements CartService {
     public void add(int customerId, CartItemAddDTO cartItemAddDTO) {
         Cart cart = cartFactory.ofCustomer(customerId);
         cart.add(cartItemAddDTO);
+        stringRedisTemplate.opsForValue().increment(String.format(RedisKeyConsts.CUSTOMER_CART_ITEM_COUNT,customerId),1);
     }
 
     @Override
